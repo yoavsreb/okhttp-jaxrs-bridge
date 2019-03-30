@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * A bridge/adapter between OkHttp3 to JAX-RS interfaces.
  *
-  Client::Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+  Client::Client jaxrsClient = OkHttpBridgeClient.newInstance(new OkHttpClient());
   String s = jaxrsClient.target("http://localhost:8080")
         .path("hello-world")
         .request("application/json")
