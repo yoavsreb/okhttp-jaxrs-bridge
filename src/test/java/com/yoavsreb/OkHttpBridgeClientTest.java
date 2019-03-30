@@ -1,5 +1,7 @@
 package com.yoavsreb;
 
+import com.yoavsreb.okhttpjaxrs.BridgeInvocation;
+import com.yoavsreb.okhttpjaxrs.OkHttpBridgeClient;
 import okhttp3.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,9 +17,10 @@ import java.util.Locale;
  * Created by yoav on 3/29/19.
  */
 public class OkHttpBridgeClientTest {
+
     @Test
     public void testGet() {
-        Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+        Client jaxrsClient = OkHttpBridgeClient.newInstance(new OkHttpClient());
         String s = jaxrsClient.target("http://localhost:8080").path("hello-world").request("application/json").get().readEntity(String.class);
         System.out.println(s);
     }
@@ -51,7 +54,7 @@ public class OkHttpBridgeClientTest {
     @Test
     public void testGetHeadersJsonObject() {
         okhttp3.OkHttpClient client = new OkHttpClient();
-        Client bridge = new OkHttpBridgeClient(client);
+        Client bridge = OkHttpBridgeClient.newInstance(client);
         javax.ws.rs.core.Response response = bridge.target("http://localhost:8080").path("hello-world").path("object")
                 .request("application/json").header("x-yoav", "headerValue").get();
         SimpleClass1 simpleClass1 = response.readEntity(SimpleClass1.class);
@@ -87,7 +90,7 @@ public class OkHttpBridgeClientTest {
     @Test
     public void testPostHeadersJsonObject() {
         okhttp3.OkHttpClient client = new OkHttpClient();
-        Client bridge = new OkHttpBridgeClient(client);
+        Client bridge = OkHttpBridgeClient.newInstance(client);
         MyMessage msg = new MyMessage();
         msg.setAge(5);
         msg.setName("Mika");
@@ -100,7 +103,7 @@ public class OkHttpBridgeClientTest {
     @Test
     public void testUriBuilding() {
         okhttp3.OkHttpClient client = null;
-        Client bridge = new OkHttpBridgeClient(client);
+        Client bridge = OkHttpBridgeClient.newInstance(client);
         BridgeInvocation.Builder invoc = bridge.target("http://localhost:8080").path("hello-world")
                 .queryParam("q", "queryParam1")
                 .request("application/json").header("x-yoav", "headerValue");
@@ -111,7 +114,7 @@ public class OkHttpBridgeClientTest {
     @Test
     public void testBuilderHeaders() {
         okhttp3.OkHttpClient client = null;
-        Client bridge = new OkHttpBridgeClient(client);
+        Client bridge = OkHttpBridgeClient.newInstance(client);
         BridgeInvocation.Builder invoc = bridge.target("http://localhost:8080").path("hello-world")
                 .queryParam("q", "queryParam1")
                 .request()

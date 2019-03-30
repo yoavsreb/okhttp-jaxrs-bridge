@@ -1,4 +1,4 @@
-package com.yoavsreb;
+package com.yoavsreb.okhttpjaxrs;
 
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.*;
@@ -7,13 +7,14 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.net.URI;
+import java.time.Instant;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by yoav on 3/29/19.
+ * TODO: implement missing functions.
  */
 public class BridgeResponse extends Response {
     final okhttp3.Response response;
@@ -117,7 +118,7 @@ public class BridgeResponse extends Response {
 
     @Override
     public Date getDate() {
-        return null;
+        return Date.from(Instant.ofEpochMilli(response.receivedResponseAtMillis()));
     }
 
     @Override
@@ -157,7 +158,11 @@ public class BridgeResponse extends Response {
 
     @Override
     public MultivaluedMap<String, String> getStringHeaders() {
-        return null;
+        MultivaluedHashMap<String, String> returnValue = new MultivaluedHashMap<>();
+        for(String name : response.headers().names()) {
+            returnValue.addAll(name, response.headers(name));
+        }
+        return returnValue;
     }
 
     @Override

@@ -1,6 +1,6 @@
-package com.yoavsreb;
+package com.yoavsreb.okhttpjaxrs;
 
-import org.glassfish.jersey.uri.internal.JerseyUriBuilder;
+import okhttp3.OkHttpClient;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -15,43 +15,61 @@ import java.util.Map;
 
 /**
  * A bridge/adapter between OkHttp3 to JAX-RS interfaces.
- * Only the following flows are supported:
- *  Client::target
  *
- * Created by yoav on 3/29/19.
+  Client::Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+  String s = jaxrsClient.target("http://localhost:8080")
+        .path("hello-world")
+        .request("application/json")
+        .get()
+        .readEntity(String.class);
+ *
+ * Notice all calls to Client::register will fail with <b>NotImplementedException</b> - all
+ * configurations should be done directly over the OkHttp client passed in.
  */
 public class OkHttpBridgeClient implements Client {
     final okhttp3.OkHttpClient client;
-    final BridgeSerDe.Serializer serialializer;
-    final BridgeSerDe.Deserializer deserializer;
+    final Serializer serializer;
+    final Deserializer deserializer;
+    final UriBuilderFactory uriBuilderFactory;
 
-    public OkHttpBridgeClient(okhttp3.OkHttpClient client) {
-        this(client, BridgeSerDe.DEFAULT_SERIALIZER, BridgeSerDe.DEFAULT_DESERIALIZER);
+    public static OkHttpBridgeClient newInstance(OkHttpClient client) {
+        GsonSerializerDeserializer serializerDeserializer = new GsonSerializerDeserializer();
+        return new OkHttpBridgeClient(client, serializerDeserializer, serializerDeserializer, new JerseyUriBuilderFactory());
     }
 
-    public OkHttpBridgeClient(okhttp3.OkHttpClient client, BridgeSerDe.Serializer serialializer, BridgeSerDe.Deserializer deserializer) {
+    public static OkHttpBridgeClient newInstance(okhttp3.OkHttpClient client, Serializer serializer, Deserializer deserializer,
+                                                 UriBuilderFactory uriBuilderFactory) {
+        return new OkHttpBridgeClient(client, serializer, deserializer, uriBuilderFactory);
+    }
+
+    OkHttpBridgeClient(okhttp3.OkHttpClient client, Serializer serializer, Deserializer deserializer,
+                              UriBuilderFactory uriBuilderFactory) {
         this.client = client;
-        this.serialializer = serialializer;
+        this.serializer = serializer;
         this.deserializer = deserializer;
+        this.uriBuilderFactory = uriBuilderFactory;
     }
-    public BridgeSerDe.Serializer getSerialializer() {
-        return serialializer;
+    public Serializer getSerializer() {
+        return serializer;
     }
 
-    public BridgeSerDe.Deserializer getDeserializer() {
+    public Deserializer getDeserializer() {
         return deserializer;
     }
 
+    public UriBuilderFactory getUriBuilderFactory() {
+        return uriBuilderFactory;
+    }
     public void close() {
         //No-Op
     }
 
     public WebTarget target(String s) {
-        return new BridgeWebTarget(JerseyUriBuilder.fromPath(s), this);
+        return new BridgeWebTarget(uriBuilderFactory.fromPath(s), this);
     }
 
     public WebTarget target(URI uri) {
-        return new BridgeWebTarget(JerseyUriBuilder.fromUri(uri), this);
+        return new BridgeWebTarget(uriBuilderFactory.fromUri(uri), this);
     }
 
     public WebTarget target(UriBuilder uriBuilder) {
@@ -59,12 +77,14 @@ public class OkHttpBridgeClient implements Client {
     }
 
     public WebTarget target(Link link) {
-        return new BridgeWebTarget(JerseyUriBuilder.fromLink(link), this);
+        return new BridgeWebTarget(uriBuilderFactory.fromLink(link), this);
     }
 
     public Invocation.Builder invocation(Link link) {
         throw new NotImplementedException();
     }
+
+
 
     /**
      * Not implemented.

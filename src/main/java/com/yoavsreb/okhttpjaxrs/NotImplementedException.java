@@ -1,4 +1,4 @@
-package com.yoavsreb;
+package com.yoavsreb.okhttpjaxrs;
 
 /**
  * Created by yoav on 3/29/19.

@@ -1,4 +1,4 @@
-package com.yoavsreb;
+package com.yoavsreb.okhttpjaxrs;
 
 
 import okhttp3.Request;
@@ -61,7 +61,7 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Invocation build(String s, Entity<?> entity) {
-        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerialializer().toJsonString(entity.getEntity()));
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerializer().toJsonString(entity.getEntity()));
         builder.method(s, requestBody);
         return new BridgeInvocation(builder.build(), this.client);
     }
@@ -184,7 +184,7 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Response post(Entity<?> entity) {
-        builder.post(RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerialializer().toJsonString(entity.getEntity())));
+        builder.post(RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerializer().toJsonString(entity.getEntity())));
         return new BridgeInvocation(builder.build(), this.client).invoke();
     }
 

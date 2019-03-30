@@ -1,4 +1,4 @@
-package com.yoavsreb;
+package com.yoavsreb.okhttpjaxrs;
 
 import okhttp3.Request;
 

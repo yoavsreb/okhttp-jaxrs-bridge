@@ -1,6 +1,4 @@
-package com.yoavsreb;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+package com.yoavsreb.okhttpjaxrs;
 
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
@@ -11,7 +9,8 @@ import java.net.URI;
 import java.util.Map;
 
 /**
- * Created by yoav on 3/29/19.
+ * Implementation does not support WebTarget::register, WebTarget::property or WebTarget::resolveTemplate.
+ * Those will throw <b>NotImplementedException</b>
  */
 public class BridgeWebTarget implements WebTarget {
     private final UriBuilder uriBuilder;
@@ -35,54 +34,6 @@ public class BridgeWebTarget implements WebTarget {
         return this;
     }
 
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplate(String s, Object o) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplate(String s, Object o, boolean b) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplateFromEncoded(String s, Object o) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplates(Map<String, Object> map) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplates(Map<String, Object> map, boolean b) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget resolveTemplatesFromEncoded(Map<String, Object> map) {
-        throw new NotImplementedException();
-    }
-
-    /**
-     * Not implemented.
-     */
-    public WebTarget matrixParam(String s, Object... objects) {
-        throw new NotImplementedException();
-    }
 
     public WebTarget queryParam(String s, Object... objects) {
         uriBuilder.queryParam(s, objects);
@@ -170,5 +121,53 @@ public class BridgeWebTarget implements WebTarget {
      */
     public WebTarget register(Object o, Map<Class<?>, Integer> map) {
         return null;
+    }
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplate(String s, Object o) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplate(String s, Object o, boolean b) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplateFromEncoded(String s, Object o) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplates(Map<String, Object> map) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplates(Map<String, Object> map, boolean b) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget resolveTemplatesFromEncoded(Map<String, Object> map) {
+        throw new NotImplementedException();
+    }
+
+    /**
+     * Not implemented.
+     */
+    public WebTarget matrixParam(String s, Object... objects) {
+        throw new NotImplementedException();
     }
 }
