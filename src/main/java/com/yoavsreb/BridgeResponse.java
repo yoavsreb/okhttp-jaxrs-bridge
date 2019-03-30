@@ -1,7 +1,5 @@
 package com.yoavsreb;
 
-import okhttp3.*;
-
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.core.*;
 import javax.ws.rs.core.MediaType;
@@ -19,9 +17,9 @@ import java.util.Set;
  */
 public class BridgeResponse extends Response {
     final okhttp3.Response response;
-    final OkHttpClient client;
+    final OkHttpBridgeClient client;
 
-    BridgeResponse(okhttp3.Response response, OkHttpClient client) {
+    BridgeResponse(okhttp3.Response response, OkHttpBridgeClient client) {
         this.response = response;
         this.client = client;
     }

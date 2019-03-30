@@ -20,16 +20,16 @@ import java.util.Map;
  *
  * Created by yoav on 3/29/19.
  */
-public class OkHttpClient implements Client {
+public class OkHttpBridgeClient implements Client {
     final okhttp3.OkHttpClient client;
     final BridgeSerDe.Serializer serialializer;
     final BridgeSerDe.Deserializer deserializer;
 
-    public OkHttpClient(okhttp3.OkHttpClient client) {
+    public OkHttpBridgeClient(okhttp3.OkHttpClient client) {
         this(client, BridgeSerDe.DEFAULT_SERIALIZER, BridgeSerDe.DEFAULT_DESERIALIZER);
     }
 
-    public OkHttpClient(okhttp3.OkHttpClient client, BridgeSerDe.Serializer serialializer, BridgeSerDe.Deserializer deserializer) {
+    public OkHttpBridgeClient(okhttp3.OkHttpClient client, BridgeSerDe.Serializer serialializer, BridgeSerDe.Deserializer deserializer) {
         this.client = client;
         this.serialializer = serialializer;
         this.deserializer = deserializer;

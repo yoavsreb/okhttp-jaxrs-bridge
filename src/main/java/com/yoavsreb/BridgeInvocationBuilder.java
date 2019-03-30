@@ -20,11 +20,11 @@ import java.util.stream.Collectors;
  * Created by yoav on 3/29/19.
  */
 public class BridgeInvocationBuilder implements Invocation.Builder {
-    private final OkHttpClient client;
+    private final OkHttpBridgeClient client;
     private final okhttp3.Request.Builder builder = new Request.Builder();
     private boolean acceptInitialized = false;
 
-    BridgeInvocationBuilder(URI uri, OkHttpClient httpClient) {
+    BridgeInvocationBuilder(URI uri, OkHttpBridgeClient httpClient) {
         try {
             this.builder.url(uri.toURL());
         } catch (MalformedURLException ex) {
@@ -33,12 +33,12 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
         this.client = httpClient;
     }
 
-    BridgeInvocationBuilder(URI uri, OkHttpClient httpClient, MediaType... mediaType) {
+    BridgeInvocationBuilder(URI uri, OkHttpBridgeClient httpClient, MediaType... mediaType) {
         this(uri, httpClient);
         initializeAcceptHeader(Arrays.stream(mediaType).map(MediaType::toString).collect(Collectors.toList()));
     }
 
-    BridgeInvocationBuilder(URI uri, OkHttpClient httpClient, String... mediaType) {
+    BridgeInvocationBuilder(URI uri, OkHttpBridgeClient httpClient, String... mediaType) {
         this(uri, httpClient);
         initializeAcceptHeader(Arrays.asList(mediaType));
     }

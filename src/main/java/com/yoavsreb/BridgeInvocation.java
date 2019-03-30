@@ -15,11 +15,11 @@ import java.util.concurrent.Future;
  */
 public class BridgeInvocation implements Invocation {
     private final Request request;
-    private final OkHttpClient okHttpClient;
+    private final OkHttpBridgeClient okHttpBridgeClient;
 
-    BridgeInvocation(Request request, OkHttpClient httpClient) {
+    BridgeInvocation(Request request, OkHttpBridgeClient httpClient) {
         this.request = request;
-        this.okHttpClient = httpClient;
+        this.okHttpBridgeClient = httpClient;
     }
 
     public Request getRequest() {
@@ -32,7 +32,7 @@ public class BridgeInvocation implements Invocation {
 
     public Response invoke() {
         try {
-            return new BridgeResponse(okHttpClient.client.newCall(request).execute(), okHttpClient);
+            return new BridgeResponse(okHttpBridgeClient.client.newCall(request).execute(), okHttpBridgeClient);
         } catch (IOException ex) {
             throw new ProcessingException(ex);
         }

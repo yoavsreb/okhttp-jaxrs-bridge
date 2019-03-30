@@ -15,11 +15,11 @@ import java.util.Map;
  */
 public class BridgeWebTarget implements WebTarget {
     private final UriBuilder uriBuilder;
-    private final OkHttpClient okHttpClient;
+    private final OkHttpBridgeClient okHttpBridgeClient;
 
-    public BridgeWebTarget(UriBuilder builder, OkHttpClient httpClient) {
+    public BridgeWebTarget(UriBuilder builder, OkHttpBridgeClient httpClient) {
         this.uriBuilder = UriBuilder.fromUri(builder.build());
-        this.okHttpClient = httpClient;
+        this.okHttpBridgeClient = httpClient;
     }
 
     public URI getUri() {
@@ -90,16 +90,16 @@ public class BridgeWebTarget implements WebTarget {
     }
 
     public Invocation.Builder request() {
-        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpClient);
+        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpBridgeClient);
 
     }
 
     public Invocation.Builder request(String... strings) {
-        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpClient, strings);
+        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpBridgeClient, strings);
     }
 
     public Invocation.Builder request(MediaType... mediaTypes) {
-        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpClient, mediaTypes);
+        return new BridgeInvocationBuilder(uriBuilder.build(), okHttpBridgeClient, mediaTypes);
     }
 
     /**

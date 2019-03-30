@@ -8,19 +8,17 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Locale;
 
 /**
  * Created by yoav on 3/29/19.
  */
-public class OkHttpClientTest {
+public class OkHttpBridgeClientTest {
     @Test
     public void testGet() {
-        okhttp3.OkHttpClient client = new OkHttpClient();
-        Client bridge = new com.yoavsreb.OkHttpClient(client);
-        String s = bridge.target("http://localhost:8080").path("hello-world").request("application/json").get().readEntity(String.class);
+        Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+        String s = jaxrsClient.target("http://localhost:8080").path("hello-world").request("application/json").get().readEntity(String.class);
         System.out.println(s);
     }
 
@@ -53,7 +51,7 @@ public class OkHttpClientTest {
     @Test
     public void testGetHeadersJsonObject() {
         okhttp3.OkHttpClient client = new OkHttpClient();
-        Client bridge = new com.yoavsreb.OkHttpClient(client);
+        Client bridge = new OkHttpBridgeClient(client);
         javax.ws.rs.core.Response response = bridge.target("http://localhost:8080").path("hello-world").path("object")
                 .request("application/json").header("x-yoav", "headerValue").get();
         SimpleClass1 simpleClass1 = response.readEntity(SimpleClass1.class);
@@ -89,7 +87,7 @@ public class OkHttpClientTest {
     @Test
     public void testPostHeadersJsonObject() {
         okhttp3.OkHttpClient client = new OkHttpClient();
-        Client bridge = new com.yoavsreb.OkHttpClient(client);
+        Client bridge = new OkHttpBridgeClient(client);
         MyMessage msg = new MyMessage();
         msg.setAge(5);
         msg.setName("Mika");
@@ -102,7 +100,7 @@ public class OkHttpClientTest {
     @Test
     public void testUriBuilding() {
         okhttp3.OkHttpClient client = null;
-        Client bridge = new com.yoavsreb.OkHttpClient(client);
+        Client bridge = new OkHttpBridgeClient(client);
         BridgeInvocation.Builder invoc = bridge.target("http://localhost:8080").path("hello-world")
                 .queryParam("q", "queryParam1")
                 .request("application/json").header("x-yoav", "headerValue");
@@ -113,7 +111,7 @@ public class OkHttpClientTest {
     @Test
     public void testBuilderHeaders() {
         okhttp3.OkHttpClient client = null;
-        Client bridge = new com.yoavsreb.OkHttpClient(client);
+        Client bridge = new OkHttpBridgeClient(client);
         BridgeInvocation.Builder invoc = bridge.target("http://localhost:8080").path("hello-world")
                 .queryParam("q", "queryParam1")
                 .request()
