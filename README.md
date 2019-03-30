@@ -10,7 +10,7 @@ Notice this uses the following dependencies:
 
 ## Examples
 ```  
-Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+Client jaxrsClient = OkHttpBridgeClient.newInstance(new OkHttpClient());
 String s = jaxrsClient.target("http://localhost:8080")
   .path("hello-world")
   .request("application/json")
