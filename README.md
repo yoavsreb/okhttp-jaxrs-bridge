@@ -1,7 +1,8 @@
 # okhttp-jaxrs-bridge
 
 This project is bridge/adapter between [OkHttp](https://github.com/square/okhttp) to [JAX-RS interfaces](https://github.com/jax-rs).
-default serialization is using Gson - therefore Content-Encoding has to be `application/json` in case you plan on using the `Response::readEntity` or `InocationBuilder::method(..., Class<T> cls)`  which deserialize the response to a typed-object.
+
+Default serialization is using Gson - therefore Content-Encoding has to be `application/json` in case you plan on using the `Response::readEntity` or `InocationBuilder::method(..., Class<T> cls)`  which deserialize the response to a typed-object.
 
 Notice this uses the following dependencies:
 * OKHttp3 3.14.0
