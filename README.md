@@ -22,7 +22,8 @@ String s = jaxrsClient.target("http://localhost:8080")
 
 ## Usage
 In maven:
-``` <repositories>
+``` 
+        <repositories>
            <repository>
                <id>mvn-repo</id>
                <url>https://rawgit.com/yoavsreb/artifacts/master</url>
