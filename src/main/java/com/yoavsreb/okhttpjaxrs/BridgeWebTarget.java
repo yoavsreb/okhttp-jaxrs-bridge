@@ -64,63 +64,63 @@ public class BridgeWebTarget implements WebTarget {
      * Not implemented.
      */
     public WebTarget property(String s, Object o) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Class<?> aClass) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Class<?> aClass, int i) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Class<?> aClass, Class<?>... classes) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Class<?> aClass, Map<Class<?>, Integer> map) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Object o) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Object o, int i) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Object o, Class<?>... classes) {
-        return null;
+        throw new NotImplementedException();
     }
 
     /**
      * Not implemented.
      */
     public WebTarget register(Object o, Map<Class<?>, Integer> map) {
-        return null;
+        throw new NotImplementedException();
     }
     /**
      * Not implemented.

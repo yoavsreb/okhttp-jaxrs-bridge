@@ -1,6 +1,7 @@
 package com.yoavsreb.okhttpjaxrs;
 
 
+import okhttp3.Headers;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
@@ -16,9 +17,6 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by yoav on 3/29/19.
- */
 public class BridgeInvocationBuilder implements Invocation.Builder {
     private final OkHttpBridgeClient client;
     private final okhttp3.Request.Builder builder = new Request.Builder();
@@ -61,7 +59,7 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Invocation build(String s, Entity<?> entity) {
-        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerializer().toJsonString(entity.getEntity()));
+        RequestBody requestBody = RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerializer().toString(entity.getEntity(), entity.getMediaType().toString()));
         builder.method(s, requestBody);
         return new BridgeInvocation(builder.build(), this.client);
     }
@@ -79,7 +77,7 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Invocation buildPut(Entity<?> entity) {
-        return null;
+        return build("PUT", entity);
     }
 
     public AsyncInvoker async() {
@@ -109,15 +107,14 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Invocation.Builder cookie(Cookie cookie) {
-        return null;
+        throw new NotImplementedException();
     }
-
     public Invocation.Builder cookie(String s, String s1) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public Invocation.Builder cacheControl(CacheControl cacheControl) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public Invocation.Builder header(String s, Object o) {
@@ -128,14 +125,11 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
         if (valueToWorkOn instanceof Collection) {
             Collection<?> collection = (Collection<?>) valueToWorkOn;
             Iterator<?> iter = collection.iterator();
-            boolean isFirstDone = false;
+            if (iter.hasNext()) {
+                builder.header(s, iter.next().toString());
+            }
             while(iter.hasNext()) {
-                if (isFirstDone) {
-                    builder.addHeader(s, iter.next().toString());
-                } else {
-                    builder.header(s, iter.next().toString());
-                    isFirstDone = true;
-                }
+                builder.addHeader(s, iter.next().toString());
             }
         } else {
             builder.header(s, valueToWorkOn.toString());
@@ -144,119 +138,122 @@ public class BridgeInvocationBuilder implements Invocation.Builder {
     }
 
     public Invocation.Builder headers(MultivaluedMap<String, Object> multivaluedMap) {
-        return null;
+        for(String s : multivaluedMap.keySet()) {
+            builder.removeHeader(s);
+            header(s, multivaluedMap.get(s));
+        }
+        return this;
     }
 
     public Invocation.Builder property(String s, Object o) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public CompletionStageRxInvoker rx() {
-        return null;
+        throw new NotImplementedException();
     }
 
     public <T extends RxInvoker> T rx(Class<T> aClass) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public Response get() {
-        return new BridgeInvocation(builder.build(), this.client).invoke();
+        return method("GET");
     }
 
     public <T> T get(Class<T> aClass) {
-        return new BridgeInvocation(builder.build(), this.client).invoke().readEntity(aClass);
+        return method("GET", aClass);
     }
 
     public <T> T get(GenericType<T> genericType) {
-        return null;
+        return method("GET", genericType);
     }
 
     public Response put(Entity<?> entity) {
-        return null;
+        return method("PUT", entity);
     }
 
     public <T> T put(Entity<?> entity, Class<T> aClass) {
-        return null;
+        return method("PUT", entity, aClass);
     }
 
     public <T> T put(Entity<?> entity, GenericType<T> genericType) {
-        return null;
+        return method("PUT", entity, genericType);
     }
 
     public Response post(Entity<?> entity) {
-        builder.post(RequestBody.create(okhttp3.MediaType.parse(entity.getMediaType().toString()), client.getSerializer().toJsonString(entity.getEntity())));
-        return new BridgeInvocation(builder.build(), this.client).invoke();
+        return method("POST", entity);
     }
 
     public <T> T post(Entity<?> entity, Class<T> aClass) {
-        return null;
+        return method("POST", entity, aClass);
     }
 
     public <T> T post(Entity<?> entity, GenericType<T> genericType) {
-        return null;
+        return method("POST", entity, genericType);
     }
 
     public Response delete() {
-        return null;
+        return method("DELETE");
     }
 
     public <T> T delete(Class<T> aClass) {
-        return null;
+        return method("DELETE", aClass);
     }
 
     public <T> T delete(GenericType<T> genericType) {
-        return null;
+        return method("DELETE", genericType);
     }
 
     public Response head() {
-        return null;
+        return method("HEAD");
     }
 
     public Response options() {
-        return null;
+        return method("OPTIONS");
     }
 
     public <T> T options(Class<T> aClass) {
-        return null;
+        return method("OPTIONS", aClass);
     }
 
     public <T> T options(GenericType<T> genericType) {
-        return null;
+        return method("OPTIONS", genericType);
     }
 
     public Response trace() {
-        return null;
+        return method("TRACE");
     }
 
     public <T> T trace(Class<T> aClass) {
-        return null;
+        return method("TRACE", aClass);
     }
 
     public <T> T trace(GenericType<T> genericType) {
-        return null;
+        return method("TRACE", genericType);
     }
 
     public Response method(String s) {
-        return null;
+        return build(s).invoke();
     }
 
     public <T> T method(String s, Class<T> aClass) {
-        return null;
+        return method(s).readEntity(aClass);
     }
 
     public <T> T method(String s, GenericType<T> genericType) {
-        return null;
+        return method(s).readEntity(genericType);
     }
 
     public Response method(String s, Entity<?> entity) {
-        return null;
+        return build(s, entity).invoke();
     }
 
     public <T> T method(String s, Entity<?> entity, Class<T> aClass) {
-        return null;
+        return method(s, entity).readEntity(aClass);
     }
 
     public <T> T method(String s, Entity<?> entity, GenericType<T> genericType) {
-        return null;
+        return method(s, entity).readEntity(genericType);
     }
 }

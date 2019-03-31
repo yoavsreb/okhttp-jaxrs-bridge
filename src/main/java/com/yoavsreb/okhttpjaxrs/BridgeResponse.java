@@ -13,9 +13,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * TODO: implement missing functions.
- */
 public class BridgeResponse extends Response {
     final okhttp3.Response response;
     final OkHttpBridgeClient client;
@@ -36,7 +33,7 @@ public class BridgeResponse extends Response {
 
     @Override
     public Object getEntity() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -46,7 +43,8 @@ public class BridgeResponse extends Response {
             if (aClass.equals(String.class)) {
                 return (T) response.body().string();
             }
-            return client.getDeserializer().fromString(response.body().string(), aClass);
+            return client.getDeserializer().fromString(response.body().string(),
+                    response.body().contentType().toString(), aClass);
         } catch (IOException ex) {
             throw new ProcessingException(ex);
         }
@@ -55,7 +53,9 @@ public class BridgeResponse extends Response {
     @Override
     public <T> T readEntity(GenericType<T> genericType) {
         try {
-            return client.getDeserializer().fromString(response.body().string(), genericType.getType());
+            return client.getDeserializer().fromString(response.body().string(),
+                    response.body().contentType().toString(),
+                    genericType.getType());
         } catch (IOException ex) {
             throw new ProcessingException(ex);
         }
@@ -63,12 +63,12 @@ public class BridgeResponse extends Response {
 
     @Override
     public <T> T readEntity(Class<T> aClass, Annotation[] annotations) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public <T> T readEntity(GenericType<T> genericType, Annotation[] annotations) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -78,7 +78,7 @@ public class BridgeResponse extends Response {
 
     @Override
     public boolean bufferEntity() {
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -93,7 +93,7 @@ public class BridgeResponse extends Response {
 
     @Override
     public Locale getLanguage() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
@@ -103,17 +103,22 @@ public class BridgeResponse extends Response {
 
     @Override
     public Set<String> getAllowedMethods() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Map<String, NewCookie> getCookies() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public EntityTag getEntityTag() {
-        return null;
+        String headerValue = response.header("etag");
+        if (headerValue == null) {
+            return null;
+        } else {
+            return EntityTag.valueOf(headerValue);
+        }
     }
 
     @Override
@@ -123,37 +128,37 @@ public class BridgeResponse extends Response {
 
     @Override
     public Date getLastModified() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public URI getLocation() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Set<Link> getLinks() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public boolean hasLink(String s) {
-        return false;
+        throw new NotImplementedException();
     }
 
     @Override
     public Link getLink(String s) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public Link.Builder getLinkBuilder(String s) {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override
     public MultivaluedMap<String, Object> getMetadata() {
-        return null;
+        throw new NotImplementedException();
     }
 
     @Override

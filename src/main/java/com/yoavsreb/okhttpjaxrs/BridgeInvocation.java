@@ -10,9 +10,6 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
-/**
- * Created by yoav on 3/29/19.
- */
 public class BridgeInvocation implements Invocation {
     private final Request request;
     private final OkHttpBridgeClient okHttpBridgeClient;
@@ -27,7 +24,7 @@ public class BridgeInvocation implements Invocation {
     }
 
     public Invocation property(String s, Object o) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public Response invoke() {
@@ -39,27 +36,27 @@ public class BridgeInvocation implements Invocation {
     }
 
     public <T> T invoke(Class<T> aClass) {
-        return null;
+        return invoke().readEntity(aClass);
     }
 
     public <T> T invoke(GenericType<T> genericType) {
-        return null;
+        return invoke().readEntity(genericType);
     }
 
     public Future<Response> submit() {
-        return null;
+        throw new NotImplementedException();
     }
 
     public <T> Future<T> submit(Class<T> aClass) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public <T> Future<T> submit(GenericType<T> genericType) {
-        return null;
+        throw new NotImplementedException();
     }
 
     public <T> Future<T> submit(InvocationCallback<T> invocationCallback) {
-        return null;
+        throw new NotImplementedException();
     }
 
 

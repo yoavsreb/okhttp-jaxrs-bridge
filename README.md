@@ -9,8 +9,9 @@ Notice this uses the following dependencies:
 * Jersey-core 2.9  // Needed for the UriBuilder implementation
 
 ## Examples
-```  
-Client jaxrsClient = new OkHttpBridgeClient(new OkHttpClient());
+```
+okhttp3.OkHttpClient client = new OkHttpClient();
+Client jaxrsClient = OkHttpBridgeClient.newInstance(client);
 String s = jaxrsClient.target("http://localhost:8080")
   .path("hello-world")
   .request("application/json")

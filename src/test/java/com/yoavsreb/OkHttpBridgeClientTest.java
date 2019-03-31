@@ -25,6 +25,13 @@ public class OkHttpBridgeClientTest {
         System.out.println(s);
     }
 
+    @Test
+    public void testGet2() {
+        Client jaxrsClient = OkHttpBridgeClient.newInstance(new OkHttpClient());
+        String s = jaxrsClient.target("http://localhost:8080").path("hello-world").queryParam("name", "someone").request("application/json").get().readEntity(String.class);
+        System.out.println(s);
+    }
+
     public static class SimpleClass1 {
         private int i;
         private String s;
@@ -58,6 +65,7 @@ public class OkHttpBridgeClientTest {
         javax.ws.rs.core.Response response = bridge.target("http://localhost:8080").path("hello-world").path("object")
                 .request("application/json").header("x-yoav", "headerValue").get();
         SimpleClass1 simpleClass1 = response.readEntity(SimpleClass1.class);
+        System.out.println(response.getStringHeaders());
         System.out.println(response.getHeaderString("x-yoav-returned"));
         System.out.println(simpleClass1);
     }
