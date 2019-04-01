@@ -5,13 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yoavsreb</groupId>
-    <artifactId>okhttpjaxrs</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>okhttp-jaxrs-bridge</artifactId>
+    <version>0.2</version>
 
-    <distributionManagement>
+    <!-- To deploy locally -->
+    <!-- <distributionManagement>
         <repository>
             <id>internal</id>
             <url>file://${project.build.directory}/mvn-repo</url>
+        </repository>
+    </distributionManagement> -->
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-repo-maven</id>
+            <url>https://api.bintray.com/maven/yoavsreb/maven-repo/okhttp-jaxrs-bridge/;publish=1</url>
         </repository>
     </distributionManagement>
 
@@ -31,6 +39,18 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
